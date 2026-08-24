@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ราคาติดตั้งแอร์ | ศิวกรแอร์ เซอร์วิส</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ================= ตัวแปรสีและค่าคงที่ (CSS Variables) =================
+           ใช้ค่าเดียวกับหน้า index.html เพื่อให้ดีไซน์ไปด้วยกันทั้งเว็บ
+        ================================================================= */
+        :root {
+            --primary-blue: #01172b;
+            --accent-blue: #0973ff;
+            --gold: #e0d3ce;
+            --light-bg: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --nav-height: 150px;
+            --tag-standard: #5b7a99;   /* สีป้ายรุ่น "ธรรมดา" */
+            --tag-inverter: #b8934f;   /* สีป้ายรุ่น "inverter" */
+            --tag-heavy: #01172b;      /* สีป้ายรุ่น "HEAVY DUTY" */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Prompt', sans-serif; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+
+        h1, h2, h3, .navbar .logo { font-family: 'Chakra Petch', sans-serif; }
+
+        body { background-color: var(--light-bg); color: #333; overflow-x: hidden; line-height: 1.6; }
+
+        /* ================= แถบเมนูด้านบน (Navbar) — เหมือนหน้าแรกทุกจุด ================= */
+        .navbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 8%; background: rgba(15, 76, 129, 0.95);
+            backdrop-filter: blur(15px); position: fixed; top: 0; width: 100%;
+            height: var(--nav-height); z-index: 2000;
+            border-bottom: 1px solid rgba(255,255,255,0.1); transition: var(--transition);
+        }
+
+        .logo { display: flex; align-items: center; gap: 12px; color: white; font-size: clamp(18px, 4vw, 40px); font-weight: 700; }
+        .logo img { height: clamp(40px, 8vw, 80px); width: auto; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+
+        .menu { display: flex; gap: 35px; align-items: center; }
+        .menu a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 23px; font-weight: 500; transition: var(--transition); }
+        .menu a:hover { color: var(--gold); }
+        .menu a.active { color: var(--gold); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: #ffffff; min-width: 250px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 3000; top: 100%; left: 0;
+            border-radius: 15px; padding: 10px 0; overflow: hidden; animation: fadeInDown 0.3s ease;
+        }
+        .dropdown-content a { color: #333 !important; padding: 12px 20px !important; font-size: 16px !important; display: flex !important; align-items: center; gap: 12px; background: transparent !important; border-radius: 0 !important; }
+        .dropdown-content a i { width: 20px; color: var(--accent-blue); }
+        .dropdown-content a:hover { background-color: #f0f7ff !important; color: var(--accent-blue) !important; padding-left: 25px !important; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ================= ส่วนหัวหน้าเพจ (Page Header) ================= */
+        .page-hero {
+            padding: calc(var(--nav-height) + 60px) 8% 90px;
+            background: linear-gradient(rgba(1, 23, 43, 0.92), rgba(9, 115, 255, 0.75)),
+                        url('https://images.unsplash.com/photo-1631545806609-63c4ee6cb433?q=80&w=2070') center/cover;
+            color: white; text-align: center; position: relative;
+            clip-path: ellipse(140% 100% at 50% 0%);
+        }
+
+        .page-hero .eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px; border-radius: 50px; font-size: 14px;
+            color: var(--gold); margin-bottom: 20px; letter-spacing: 0.5px;
+        }
+
+        .page-hero h1 { font-size: clamp(30px, 5vw, 52px); margin-bottom: 16px; }
+        .page-hero p { font-size: 16px; color: rgba(255,255,255,0.8); max-width: 640px; margin: 0 auto; }
+
+        /* ================= ตัวกรองยี่ห้อ (Filter Pills) ================= */
+        .filter-bar {
+            display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+            padding: 40px 8% 10px; max-width: 1100px; margin: 0 auto;
+        }
+
+        .filter-pill {
+            border: 1px solid #e2e8f0; background: white; color: #4a5568;
+            padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+        }
+
+        .filter-pill:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .filter-pill.active { background: var(--primary-blue); border-color: var(--primary-blue); color: white; }
+
+        /* ================= กริดการ์ดรุ่นแอร์ (Model Grid) ================= */
+        .model-section { padding: 30px 8% 100px; max-width: 1300px; margin: 0 auto; }
+
+        .model-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 24px;
+        }
+
+        .model-card {
+            background: white; border: 1px solid #edf2f7; border-radius: 22px;
+            overflow: hidden; cursor: pointer; text-align: left;
+            transition: var(--transition); position: relative;
+            box-shadow: 0 4px 15px rgba(1, 23, 43, 0.04);
+        }
+
+        .model-card:hover { transform: translateY(-8px); box-shadow: 0 25px 45px rgba(1, 23, 43, 0.12); }
+
+        .model-card-visual {
+            height: 150px; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #f0f4f9, #e4ecf7);
+            position: relative; overflow: hidden;
+        }
+
+        .model-card-visual svg { width: 96px; height: 96px; }
+
+        .model-tag {
+            position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 700;
+            color: white; padding: 5px 12px; border-radius: 50px; letter-spacing: 0.3px;
+        }
+
+        .model-card-body { padding: 20px 22px 24px; }
+        .model-card-body h3 { font-size: 17px; color: var(--primary-blue); margin-bottom: 8px; line-height: 1.35; min-height: 46px; }
+
+        .model-card-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+        .model-price-from { font-size: 13px; color: #999; }
+        .model-price-from strong { display: block; font-size: 19px; color: var(--accent-blue); font-family: 'Chakra Petch', sans-serif; }
+
+        .model-card-arrow {
+            width: 38px; height: 38px; border-radius: 50%; background: #f0f4f9;
+            display: flex; align-items: center; justify-content: center; color: var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        .model-card:hover .model-card-arrow { background: var(--accent-blue); color: white; transform: rotate(45deg); }
+
+        /* ================= หน้าต่างแสดงรายละเอียด (Modal) ================= */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(1, 23, 43, 0.6);
+            backdrop-filter: blur(6px); z-index: 5000; display: flex;
+            align-items: center; justify-content: center; padding: 20px;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .modal-box {
+            background: white; width: 100%; max-width: 560px; max-height: 88vh;
+            border-radius: 26px; overflow: hidden; position: relative;
+            transform: translateY(30px) scale(0.97); transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex; flex-direction: column;
+        }
+
+        .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+
+        .modal-visual {
+            background: linear-gradient(135deg, var(--primary-blue), #0a2c4d);
+            padding: 40px 30px 30px; text-align: center; position: relative; flex-shrink: 0;
+        }
+
+        .modal-visual svg { width: 130px; height: 130px; }
+
+        .modal-close {
+            position: absolute; top: 16px; right: 16px; width: 38px; height: 38px;
+            border-radius: 50%; background: rgba(255,255,255,0.15); border: none;
+            color: white; font-size: 16px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: var(--transition);
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+
+        .modal-tag {
+            display: inline-block; font-size: 11px; font-weight: 700; color: white;
+            padding: 5px 14px; border-radius: 50px; margin-bottom: 10px; letter-spacing: 0.3px;
+        }
+
+        .modal-visual h3 { color: white; font-size: 22px; }
+
+        .modal-body { padding: 24px 30px 30px; overflow-y: auto; }
+
+        .modal-table { width: 100%; border-collapse: collapse; }
+        .modal-table th {
+            text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+            color: #999; padding: 0 4px 12px; font-weight: 600;
+        }
+        .modal-table td { padding: 14px 4px; border-top: 1px solid #f0f2f5; font-size: 15px; }
+        .modal-table td.btu-col { color: var(--primary-blue); font-weight: 600; }
+        .modal-table td.btu-col span { color: #999; font-weight: 400; font-size: 12px; }
+        .modal-table td.price-col { text-align: right; font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 18px; color: var(--accent-blue); }
+
+        .modal-foot {
+            margin-top: 20px; padding-top: 18px; border-top: 1px dashed #e2e8f0;
+            display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+        }
+        .modal-foot p { font-size: 13px; color: #999; }
+        .modal-call {
+            background: var(--primary-blue); color: white; text-decoration: none;
+            padding: 12px 22px; border-radius: 50px; font-size: 14px; font-weight: 600;
+            display: flex; align-items: center; gap: 8px; transition: var(--transition); flex-shrink: 0;
+        }
+        .modal-call:hover { background: var(--accent-blue); }
+
+        /* ================= ส่วนท้ายเว็บ (Footer) — เหมือนหน้าแรก ================= */
+        footer { background: #081b3a; color: rgba(255,255,255,0.7); padding: 80px 8% 30px; margin-top: 60px; }
+        .footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; align-items: flex-start; max-width: 1200px; margin: 0 auto; }
+        .footer-info h2 { color: white; margin-bottom: 25px; font-size: 28px; }
+        .footer-info p { margin-bottom: 15px; display: flex; align-items: flex-start; font-size: 16px; }
+        .footer-info i { margin-right: 15px; color: var(--gold); font-size: 20px; margin-top: 5px; }
+        .map-link { text-decoration: none; display: block; width: 100%; }
+        .map-container { width: 100%; height: 300px; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); position: relative; }
+        .map-container iframe { width: 100%; height: 100%; border: 0; pointer-events: none; }
+        .map-container::after { content: 'คลิกเพื่อดูแผนที่ขนาดใหญ่'; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(1, 23, 43, 0.4); color: rgb(255, 0, 0); display: flex; align-items: center; justify-content: center; font-weight: 600; opacity: 0; transition: 0.3s; }
+        .map-link:hover .map-container::after { opacity: 1; }
+        .footer-copy { margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; text-align: center; }
+
+        /* ================= ปุ่มติดต่อลอยตัว (Floating Buttons) ================= */
+        .floating-contact { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 3000; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: 0.3s; text-decoration: none; }
+        .float-phone { background: #28a745; }
+        .float-line { background: #06c755; }
+
+        /* ================= ตั้งค่าพิเศษสำหรับมือถือ ================= */
+        @media (max-width: 850px) {
+            .navbar { height: auto; flex-direction: column; padding: 10px 5%; gap: 10px; }
+            .logo { font-size: 20px; }
+            .logo img { height: 40px; }
+            .menu { display: flex !important; width: 100%; overflow-x: auto; padding-bottom: 8px; gap: 12px; justify-content: flex-start; scrollbar-width: none; }
+            .menu::-webkit-scrollbar { display: none; }
+            .menu a, .dropdown .dropbtn { font-size: 15px; white-space: nowrap; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 20px; }
+            .dropdown:hover .dropdown-content { display: none; }
+            .page-hero { padding-top: 140px; }
+            .footer-container { text-align: center; }
+            .footer-info p { justify-content: center; }
+            .map-container { height: 200px; width: 100%; }
+            .modal-box { max-height: 92vh; border-radius: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="IM/Adobe Express 2026-03-13 16.31.52.png" alt="Logo">
+            <span>ศิวกรแอร์ เซอร์วิส</span>
+        </div>
+        <div class="menu">
+            <a href="index.html">หน้าแรก</a>
+            <div class="dropdown">
+                <a href="#services" class="dropbtn">บริการ <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: 5px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="service-install.html"><i class="fas fa-snowflake"></i> ติดตั้งแอร์ใหม่</a>
+                    <a href="service-clean.html"><i class="fas fa-pump-soap"></i> ล้างแอร์ฆ่าเชื้อ</a>
+                    <a href="service-repair.html"><i class="fas fa-tools"></i> ซ่อมบำรุงด่วน</a>
+                    <a href="service-electric.html"><i class="fas fa-bolt"></i> งานระบบไฟฟ้า</a>
+                    <a href="service-cctv.html"><i class="fas fa-video"></i> กล้องวงจรปิด</a>
+                    <a href="service-parts.html"><i class="fas fa-box-open"></i> จำหน่ายอะไหล่</a>
+                </div>
+            </div>
+            <a href="prices.html" class="active">ราคาติดตั้งแอร์</a>
+            <a href="nakhonsawan.html">ผลงาน</a>
+            <a href="licenses.html">ใบอนุญาตประกอบวิชาชีพ</a>
+            <a href="contact.html">ข้อมูลช่าง</a>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <span class="eyebrow"><i class="fas fa-tags"></i> อัปเดตราคาล่าสุด ปี 2026</span>
+        <h1>ราคาติดตั้งแอร์ทุกยี่ห้อ</h1>
+        <p>เลือกยี่ห้อและรุ่นที่สนใจ แตะที่การ์ดเพื่อดูราคาติดตั้งแยกตามขนาด BTU แบบละเอียด</p>
+    </section>
+
+    <div class="filter-bar" id="filterBar">
+        <!-- ปุ่มกรองยี่ห้อจะถูกสร้างขึ้นอัตโนมัติจากข้อมูลใน airPriceData -->
+    </div>
+
+    <section class="model-section">
+        <div class="model-grid" id="modelGrid">
+            <!-- การ์ดรุ่นแอร์จะถูกสร้างขึ้นอัตโนมัติจากข้อมูลใน airPriceData -->
+        </div>
+    </section>
+
+    <!-- ================= Modal แสดงรายละเอียดราคา ================= -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-visual" id="modalVisual">
+                <button class="modal-close" id="modalClose" aria-label="ปิด"><i class="fas fa-xmark"></i></button>
+                <span class="modal-tag" id="modalTag"></span>
+                <div id="modalIllustration"></div>
+                <h3 id="modalTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <thead>
+                        <tr><th>ขนาด BTU</th><th style="text-align:right;">ราคาติดตั้ง</th></tr>
+                    </thead>
+                    <tbody id="modalTableBody"></tbody>
+                </table>
+                <div class="modal-foot">
+                    <p>ราคารวมติดตั้งมาตรฐาน (ท่อทองแดง 4 ม.) ยังไม่รวมอุปกรณ์เสริมเพิ่มเติม</p>
+                    <a href="tel:0631688547" class="modal-call"><i class="fas fa-phone"></i> โทรสอบถาม</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <h2>ศิวกรแอร์ เซอร์วิส จำกัด</h2>
+                <p><i class="fas fa-map-marker-alt"></i> 741 Charoen Phon, Banphot Phisai District, Nakhon Sawan 60180</p>
+                <p><i class="fas fa-clock"></i> เปิดบริการทุกวัน: 08:00 - 18:00 น.</p>
+                <p><i class="fas fa-phone-alt"></i> 0631688547</p>
+                <p><i class="fas fa-phone-alt"></i> 0631615730</p>
+            </div>
+            <a href="https://www.google.com/maps/place/%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%A8%E0%B8%B4%E0%B8%A7%E0%B8%81%E0%B8%A3%E0%B9%81%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%A7%E0%B8%B4%E0%B8%AA/@15.9487466,99.9811631,399m/data=!3m1!1e3!4m6!3m5!1s0x30e0618f72bed6fb:0xf249a0e9bf0afdb9!8m2!3d15.9489198!4d99.9811804!16s%2Fg%2F11twqp8hzm?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-link">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1735.7994920962788!2d99.9811631!3d15.9487466!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e0618f72bed6fb%3A0xf249a0e9bf0afdb9!2z4Lij4LmJ4Liy4LiZ4Lio4Li04Lin4LiB4Lij4LmB4Lit4Lij4LmM4LmA4LiL4Lit4Lij4LmM4Lin4Li04Liq!5e1!3m2!1sen!2sth!4v1773635814027!5m2!1sen!2sth" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </a>
+        </div>
+        <div class="footer-copy">© 2026 Siwakon Air Service Co.,Ltd | Professional Cooling Solutions</div>
+    </footer>
+
+    <div class="floating-contact">
+        <a href="tel:0631688547" class="float-btn float-phone"><i class="fas fa-phone"></i></a>
+        <a href="#" class="float-btn float-line"><i class="fab fa-line"></i></a>
+    </div>
+
+    <script>
+        /* =====================================================================
+           ข้อมูลราคาแอร์ + ค่าติดตั้ง (airPriceData)
+           -------------------------------------------------------------------
+           แก้ไขราคา / เพิ่มยี่ห้อ / เพิ่มขนาด BTU ได้ที่นี่ที่เดียว ไม่ต้องแตะ HTML
+           โครงสร้างของแต่ละยี่ห้อ:
+             {
+               name : "ชื่อรุ่นแอร์ที่จะแสดง"
+               brand: "กลุ่มยี่ห้อ (ไว้ใช้กรองปุ่ม Filter)"
+               tag  : "standard" | "inverter" | "heavy"  -> กำหนดสีป้ายและสีภาพประกอบ
+               sizes: [ { btu: ขนาดBTU, price: ราคา(บาท) }, ... ]
+             }
+           - เรียงลำดับ object ในลิสต์ = ลำดับการ์ดที่แสดงบนเว็บ
+           - เรียงลำดับใน sizes = ลำดับแถวราคาในตาราง
+        ===================================================================== */
+        const airPriceData = [
+            {
+                name: "Haier ธรรมดา", brand: "Haier", tag: "standard",
+                sizes: [
+                    { btu: 9000,  price: 13900 },
+                    { btu: 12000, price: 14900 },
+                    { btu: 18000, price: 18900 },
+                    { btu: 24000, price: 23900 },
+                ]
+            },
+            {
+                name: "Haier inverter", brand: "Haier", tag: "inverter",
+                sizes: [
+                    { btu: 9000,  price: 14900 },
+                    { btu: 12000, price: 15900 },
+                    { btu: 15000, price: 17900 },
+                    { btu: 18000, price: 19900 },
+                    { btu: 24000, price: 25900 },
+                    { btu: 30000, price: 37900 },
+                ]
+            },
+            {
+                name: "มิตซูบิชิ HEAVY DUTY ธรรมดา", brand: "มิตซูบิชิ", tag: "heavy",
+                sizes: [
+                    { btu: 9000,  price: 18500 },
+                    { btu: 12000, price: 20900 },
+                    { btu: 18000, price: 26900 },
+                ]
+            },
+            {
+                name: "มิตซูบิชิ สลิม Mr.Slim inverter", brand: "มิตซูบิชิ", tag: "inverter",
+                sizes: [
+                    { btu: 9000,  price: 18900 },
+                    { btu: 12000, price: 19500 },
+                    { btu: 15000, price: 24900 },
+                    { btu: 18000, price: 27900 },
+                    { btu: 24000, price: 36900 },
+                ]
+            },
+            {
+                name: "แคเรียร์ Copper 7 ธรรมดา", brand: "แคเรียร์", tag: "standard",
+                sizes: [
+                    { btu: 9000,  price: 15900 },
+                    { btu: 12000, price: 16900 },
+                    { btu: 18000, price: 23900 },
+                    { btu: 24000, price: 29500 },
+                ]
+            },
+            {
+                name: "แคเรียร์ Copper ION inverter", brand: "แคเรียร์", tag: "inverter",
+                sizes: [
+                    { btu: 9000,  price: 16900 },
+                    { btu: 12000, price: 17900 },
+                    { btu: 18000, price: 24900 },
+                    { btu: 24000, price: 35900 },
+                ]
+            },
+            {
+                name: "LG inverter", brand: "LG", tag: "inverter",
+                sizes: [
+                    { btu: 9000,  price: 15500 },
+                    { btu: 12000, price: 16500 },
+                    { btu: 18000, price: 20900 },
+                    { btu: 24000, price: 25900 },
+                ]
+            },
+            {
+                name: "ไดกิ้น (Daikin) ธรรมดา", brand: "ไดกิ้น", tag: "standard",
+                sizes: [
+                    { btu: 9000,  price: 17500 },
+                    { btu: 12000, price: 19800 },
+                    { btu: 15000, price: 22900 },
+                    { btu: 18000, price: 27900 },
+                ]
+            },
+            {
+                name: "ไดกิ้น (Daikin) inverter", brand: "ไดกิ้น", tag: "inverter",
+                sizes: [
+                    { btu: 9000,  price: 18500 },
+                    { btu: 12000, price: 19900 },
+                    { btu: 15000, price: 23900 },
+                    { btu: 18000, price: 27900 },
+                ]
+            },
+            {
+                name: "มิตซูบิชิ HEVAY DUTY", brand: "มิตซูบิชิ", tag: "heavy",
+                sizes: [
+                    { btu: 24000, price: 35900 },
+                ]
+            },
+        ];
+
+        // ------- ป้ายกำกับตามแท็ก (ใช้ทั้งในการ์ดและ modal) -------
+        const tagMeta = {
+            standard: { label: "ธรรมดา",     color: "var(--tag-standard)" },
+            inverter: { label: "INVERTER",   color: "var(--tag-inverter)" },
+            heavy:    { label: "HEAVY DUTY", color: "var(--tag-heavy)" },
+        };
+
+        function formatPrice(num) { return num.toLocaleString('th-TH'); }
+
+        function minPrice(sizes) { return Math.min(...sizes.map(s => s.price)); }
+
+        /* ---------------------------------------------------------------
+           ภาพประกอบเครื่องปรับอากาศ (วาดด้วย SVG ล้วนๆ ไม่ใช้รูปภายนอก)
+           สีของเครื่องจะเปลี่ยนไปตาม tag เพื่อให้แยกรุ่นได้ง่ายด้วยสายตา
+        --------------------------------------------------------------- */
+        function acIllustration(tag, size) {
+            const accent = tag === 'inverter' ? '#c9a96a' : (tag === 'heavy' ? '#0973ff' : '#8fb3d9');
+            return `
+            <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+                <rect x="15" y="20" width="130" height="46" rx="16" fill="#f5f8fc"/>
+                <rect x="15" y="20" width="130" height="46" rx="16" fill="none" stroke="${accent}" stroke-width="2"/>
+                <rect x="30" y="34" width="34" height="4" rx="2" fill="${accent}"/>
+                <circle cx="122" cy="36" r="4" fill="${accent}">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.8s" repeatCount="indefinite"/>
+                </circle>
+                <rect x="28" y="52" width="90" height="4" rx="2" fill="#dbe6f2"/>
+                <rect x="28" y="58" width="90" height="4" rx="2" fill="#dbe6f2"/>
+                <g stroke="${accent}" stroke-width="2.5" stroke-linecap="round" opacity="0.75">
+                    <path d="M50 72 C 46 82, 46 90, 40 98">
+                        <animate attributeName="opacity" values="0;1;0" dur="2.4s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M80 72 C 78 84, 78 92, 80 102">
+                        <animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.4s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M110 72 C 114 82, 114 90, 120 98">
+                        <animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.8s" repeatCount="indefinite"/>
+                    </path>
+                </g>
+            </svg>`;
+        }
+
+        // ------- สร้างปุ่มกรองยี่ห้อ (Filter Pills) จากข้อมูลจริง -------
+        function renderFilters() {
+            const bar = document.getElementById('filterBar');
+            const brands = ["ทั้งหมด", ...new Set(airPriceData.map(m => m.brand))];
+            bar.innerHTML = brands.map((b, i) => `
+                <button class="filter-pill ${i === 0 ? 'active' : ''}" data-brand="${b}">${b}</button>
+            `).join('');
+
+            bar.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    bar.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderGrid(btn.dataset.brand);
+                });
+            });
+        }
+
+        // ------- สร้างการ์ดรุ่นแอร์ทั้งหมด (หรือกรองตามยี่ห้อ) -------
+        function renderGrid(filterBrand = "ทั้งหมด") {
+            const grid = document.getElementById('modelGrid');
+            const list = filterBrand === "ทั้งหมด" ? airPriceData : airPriceData.filter(m => m.brand === filterBrand);
+
+            grid.innerHTML = list.map(model => {
+                const meta = tagMeta[model.tag];
+                const idx = airPriceData.indexOf(model);
+                return `
+                <div class="model-card" data-index="${idx}">
+                    <div class="model-card-visual">
+                        <span class="model-tag" style="background:${meta.color}">${meta.label}</span>
+                        ${acIllustration(model.tag, 96)}
+                    </div>
+                    <div class="model-card-body">
+                        <h3>${model.name}</h3>
+                        <div class="model-card-meta">
+                            <div class="model-price-from">
+                                เริ่มต้น
+                                <strong>฿${formatPrice(minPrice(model.sizes))}</strong>
+                            </div>
+                            <div class="model-card-arrow"><i class="fas fa-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            grid.querySelectorAll('.model-card').forEach(card => {
+                card.addEventListener('click', () => openModal(parseInt(card.dataset.index, 10)));
+            });
+        }
+
+        // ------- เปิด/ปิด Modal แสดงราคาแบบละเอียดของแต่ละรุ่น -------
+        const overlay = document.getElementById('modalOverlay');
+
+        function openModal(index) {
+            const model = airPriceData[index];
+            const meta = tagMeta[model.tag];
+
+            document.getElementById('modalTag').textContent = meta.label;
+            document.getElementById('modalTag').style.background = meta.color;
+            document.getElementById('modalTitle').textContent = model.name;
+            document.getElementById('modalIllustration').innerHTML = acIllustration(model.tag, 130);
+
+            const sorted = [...model.sizes].sort((a, b) => a.btu - b.btu);
+            document.getElementById('modalTableBody').innerHTML = sorted.map(s => `
+                <tr>
+                    <td class="btu-col">${formatPrice(s.btu)} <span>BTU</span></td>
+                    <td class="price-col">฿${formatPrice(s.price)}</td>
+                </tr>
+            `).join('');
+
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // ------- เริ่มต้นแสดงผลเมื่อโหลดหน้าเสร็จ -------
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFilters();
+            renderGrid();
+        });
+    </script>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                nav.style.height = '70px';
+                nav.style.background = 'rgba(8, 27, 58, 0.98)';
+            } else {
+                nav.style.height = '100px';
+                nav.style.background = 'rgba(15, 76, 129, 0.95)';
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -204,6 +204,37 @@
 
         .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
 
+        .price-cta {
+            margin: 0 8% 100px; padding: 50px 8%; border-radius: 30px;
+            background: linear-gradient(120deg, var(--primary-blue), #0a2c4d);
+            color: white; display: flex; align-items: center; justify-content: space-between;
+            gap: 30px; flex-wrap: wrap; position: relative; overflow: hidden;
+        }
+
+        .price-cta::before {
+            content: '\f2c9'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: -30px; top: 50%; transform: translateY(-50%);
+            font-size: 220px; color: rgba(255,255,255,0.04);
+        }
+
+        .price-cta-text { position: relative; z-index: 1; max-width: 600px; }
+        .price-cta-text h2 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 10px; color: white; }
+        .price-cta-text p { color: rgba(255,255,255,0.75); font-size: 15px; }
+
+        .price-cta-btn {
+            position: relative; z-index: 1; flex-shrink: 0;
+            padding: 16px 34px; background: var(--gold); color: #01172b;
+            border-radius: 50px; text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; gap: 10px; transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        .price-cta-btn:hover { transform: translateY(-4px); background: #fff; }
+
+        @media (max-width: 850px) {
+            .price-cta { margin: 0 5% 60px; padding: 40px 6%; text-align: center; justify-content: center; }
+        }
+
         /* ================= ส่วนผลงาน (Portfolio) ================= */
         .portfolio { padding: 80px 0; background: var(--primary-blue); color: white; text-align: center; }
 
@@ -354,6 +385,7 @@
                 </div>
             </div>
 
+            <a href="prices.html">ราคาติดตั้งแอร์</a>
             <a href="nakhonsawan.html">ผลงาน</a>
             <a href="licenses.html">ใบอนุญาตประกอบวิชาชีพ</a>
             <a href="contact.html">ข้อมูลช่าง</a>
@@ -420,6 +452,16 @@
                 <span class="more-link">เพิ่มเติม</span>
             </a>
         </div>
+    </section>
+
+    <section class="price-cta">
+        <div class="price-cta-text">
+            <h2>เช็คราคาแอร์แต่ละรุ่นแบบเต็มๆ</h2>
+            <p>รวมราคาติดตั้งแอร์ทุกยี่ห้อ ทุกขนาด BTU ที่เรามีจำหน่าย พร้อมรายละเอียดแยกรุ่น เลือกดูได้ในหน้าเดียว</p>
+        </div>
+        <a href="prices.html" class="price-cta-btn">
+            <i class="fas fa-tags"></i> ดูราคาติดตั้งแอร์ทั้งหมด
+        </a>
     </section>
 
     <footer style="margin-top: 100px;">
