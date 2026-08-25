@@ -121,6 +121,9 @@
 
         .model-card-visual svg { width: 96px; height: 96px; }
 
+        /* ถ้ามีรูปจริง (model.image) จะเต็มพื้นที่การ์ดแทนภาพ SVG ที่วาดเอง */
+        .model-card-visual img { width: 100%; height: 100%; object-fit: cover; }
+
         .model-tag {
             position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 700;
             color: white; padding: 5px 12px; border-radius: 50px; letter-spacing: 0.3px;
@@ -166,6 +169,12 @@
         }
 
         .modal-visual svg { width: 130px; height: 130px; }
+
+        /* ถ้ามีรูปจริง (model.image) จะแสดงเป็นรูปสี่เหลี่ยมมุมโค้งแทนภาพ SVG */
+        .modal-visual img {
+            width: 100%; max-width: 260px; height: 160px; object-fit: cover;
+            border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
 
         .modal-close {
             position: absolute; top: 16px; right: 16px; width: 38px; height: 38px;
@@ -343,13 +352,23 @@
                name : "ชื่อรุ่นแอร์ที่จะแสดง"
                brand: "กลุ่มยี่ห้อ (ไว้ใช้กรองปุ่ม Filter)"
                tag  : "standard" | "inverter" | "heavy"  -> กำหนดสีป้ายและสีภาพประกอบ
+               image: "path/ไปยังรูปภาพ.jpg"  -> ไม่บังคับ! ถ้าใส่ไว้ จะใช้รูปนี้แทนภาพวาด SVG
                sizes: [ { btu: ขนาดBTU, price: ราคา(บาท) }, ... ]
              }
            - เรียงลำดับ object ในลิสต์ = ลำดับการ์ดที่แสดงบนเว็บ
            - เรียงลำดับใน sizes = ลำดับแถวราคาในตาราง
+
+           ----------------------- วิธีใส่รูปภาพเอง (สำคัญ) -----------------------
+           1) สร้างโฟลเดอร์ชื่อ "images" ไว้ในตำแหน่งเดียวกับไฟล์ prices.html นี้
+           2) เอารูปแอร์แต่ละรุ่นไปวางในโฟลเดอร์นั้น เช่น images/haier-standard.jpg
+              (แนะนำให้ครอปรูปเป็นแนวนอน สัดส่วนประมาณ 4:3 จะสวยที่สุด ไฟล์ไม่ควรใหญ่เกิน ~300KB)
+           3) เติมบรรทัด image: "images/haier-standard.jpg" ในรุ่นที่ต้องการ (ดูตัวอย่างด้านล่าง)
+           4) รุ่นไหนไม่ใส่ image ไว้ ระบบจะแสดงภาพวาด SVG แบบเดิมให้อัตโนมัติ ไม่ต้องใส่ให้ครบทุกรุ่นก็ได้
         ===================================================================== */
         const airPriceData = [
             {
+                // ตัวอย่าง: ถ้ามีรูปแล้ว ให้เอา // ออกจากบรรทัดด้านล่าง แล้วใส่ path รูปของจริง
+                // image: "images/haier-standard.jpg",
                 name: "Haier ธรรมดา", brand: "Haier", tag: "standard",
                 sizes: [
                     { btu: 9000,  price: 13900 },
@@ -510,7 +529,7 @@
                 <div class="model-card" data-index="${idx}">
                     <div class="model-card-visual">
                         <span class="model-tag" style="background:${meta.color}">${meta.label}</span>
-                        ${acIllustration(model.tag, 96)}
+                        ${model.image ? `<img src="${model.image}" alt="${model.name}" loading="lazy">` : acIllustration(model.tag, 96)}
                     </div>
                     <div class="model-card-body">
                         <h3>${model.name}</h3>
@@ -540,7 +559,9 @@
             document.getElementById('modalTag').textContent = meta.label;
             document.getElementById('modalTag').style.background = meta.color;
             document.getElementById('modalTitle').textContent = model.name;
-            document.getElementById('modalIllustration').innerHTML = acIllustration(model.tag, 130);
+            document.getElementById('modalIllustration').innerHTML = model.image
+                ? `<img src="${model.image}" alt="${model.name}">`
+                : acIllustration(model.tag, 130);
 
             const sorted = [...model.sizes].sort((a, b) => a.btu - b.btu);
             document.getElementById('modalTableBody').innerHTML = sorted.map(s => `
